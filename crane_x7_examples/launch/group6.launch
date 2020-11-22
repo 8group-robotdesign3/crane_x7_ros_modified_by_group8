@@ -1,0 +1,6 @@
+<launch>
+    <node name="main_node"   pkg="crane_x7_examples" type="main_node" output="screen"/>
+    <node name="node1_pickup"   pkg="crane_x7_examples" type="node1_pickup.py" output="screen"/>
+    <node name="node2_nagemae"   pkg="crane_x7_examples" type="node2_nagemae.py" output="screen"/>
+    <node name="node3_throw"   pkg="crane_x7_examples" type="node3_throw.py" output="screen"/>
+</launch>

@@ -1,0 +1,174 @@
+<?xml version="1.0" ?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="crane_x7">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="arm">
+        <chain base_link="crane_x7_mounting_plate_link" tip_link="crane_x7_gripper_base_link" />
+    </group>
+    <group name="gripper">
+        <link name="crane_x7_gripper_finger_a_link" />
+        <link name="crane_x7_gripper_finger_b_link" />
+        <joint name="crane_x7_gripper_finger_a_joint" />
+        <joint name="crane_x7_gripper_finger_b_joint" />
+    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="vertical" group="arm">
+        <joint name="crane_x7_lower_arm_fixed_part_joint" value="0" />
+        <joint name="crane_x7_lower_arm_revolute_part_joint" value="0" />
+        <joint name="crane_x7_shoulder_fixed_part_pan_joint" value="0" />
+        <joint name="crane_x7_shoulder_revolute_part_tilt_joint" value="0" />
+        <joint name="crane_x7_upper_arm_revolute_part_rotate_joint" value="0" />
+        <joint name="crane_x7_upper_arm_revolute_part_twist_joint" value="0" />
+        <joint name="crane_x7_wrist_joint" value="0" />
+    </group_state>
+    <group_state name="home" group="arm">
+        <joint name="crane_x7_lower_arm_fixed_part_joint" value="0.0563" />
+        <joint name="crane_x7_lower_arm_revolute_part_joint" value="0.4817" />
+        <joint name="crane_x7_shoulder_fixed_part_pan_joint" value="0" />
+        <joint name="crane_x7_shoulder_revolute_part_tilt_joint" value="0.3979" />
+        <joint name="crane_x7_upper_arm_revolute_part_rotate_joint" value="-2.1994" />
+        <joint name="crane_x7_upper_arm_revolute_part_twist_joint" value="0" />
+        <joint name="crane_x7_wrist_joint" value="0" />
+    </group_state>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="end_effector" parent_link="crane_x7_gripper_base_link" group="gripper" />
+    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+    <virtual_joint name="table" type="fixed" parent_frame="world" child_link="base_link" />
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_gripper_finger_a_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_gripper_finger_b_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_lower_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_lower_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_lower_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_lower_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_base_link" link2="crane_x7_wrist_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_gripper_finger_b_link" reason="User" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_lower_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_lower_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_lower_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_lower_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_a_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_lower_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_lower_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_lower_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_lower_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_gripper_finger_b_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_lower_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_lower_arm_fixed_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_lower_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_mounting_plate_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_shoulder_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_shoulder_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_l_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_lower_arm_fixed_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_lower_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_mounting_plate_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_shoulder_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_shoulder_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_joint_cover_r_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_lower_arm_revolute_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_mounting_plate_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_shoulder_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_shoulder_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_fixed_part_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_link" link2="crane_x7_wrist_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" link2="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_l_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_lower_arm_revolute_part_logo_text_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_mounting_plate_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_shoulder_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_shoulder_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_symbol_r_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_text_l_link" link2="crane_x7_lower_arm_revolute_part_logo_text_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_text_l_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_text_l_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_text_l_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_text_r_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_text_r_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_text_r_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_lower_arm_revolute_part_logo_text_r_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_mounting_plate_link" link2="crane_x7_shoulder_fixed_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_mounting_plate_link" link2="crane_x7_shoulder_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_mounting_plate_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_mounting_plate_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_mounting_plate_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_mounting_plate_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_shoulder_fixed_part_link" link2="crane_x7_shoulder_revolute_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_shoulder_fixed_part_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_shoulder_fixed_part_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_shoulder_fixed_part_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_shoulder_fixed_part_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_shoulder_revolute_part_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_l_link" reason="Never" />
+    <disable_collisions link1="crane_x7_shoulder_revolute_part_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_shoulder_revolute_part_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_shoulder_revolute_part_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_upper_arm_fixed_part_joint_cover_l_link" link2="crane_x7_upper_arm_fixed_part_joint_cover_r_link" reason="Never" />
+    <disable_collisions link1="crane_x7_upper_arm_fixed_part_joint_cover_l_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_upper_arm_fixed_part_joint_cover_l_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_upper_arm_fixed_part_joint_cover_l_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_upper_arm_fixed_part_joint_cover_r_link" link2="crane_x7_upper_arm_fixed_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_upper_arm_fixed_part_joint_cover_r_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Never" />
+    <disable_collisions link1="crane_x7_upper_arm_fixed_part_joint_cover_r_link" link2="crane_x7_wrist_link" reason="Never" />
+    <disable_collisions link1="crane_x7_upper_arm_fixed_part_link" link2="crane_x7_upper_arm_revolute_part_link" reason="Adjacent" />
+    <disable_collisions link1="crane_x7_upper_arm_revolute_part_link" link2="crane_x7_wrist_link" reason="Never" />
+</robot>
