@@ -6,7 +6,7 @@
 
 ![crane_x7_gazebo](https://rt-net.github.io/images/crane-x7/crane_x7_gazebo.png "crane_x7_gazebo")
 
-ROS Packages for CRANE-X7.
+ROS Packages for CRANE-X7. This package was made changes to original [https://github.com/rt-net/crane_x7_ros].  A group8 that was composed in cit-future-robotics lecture edited this. The main changes are made to the contents of the every package.xml file, crane_x7_examples, and crane_x7_gazebo folders of each folder.
 
 Product page:  
 [https://www.rt-net.jp/products/crane-x7](https://www.rt-net.jp/products/crane-x7?lang=en)
@@ -114,12 +114,14 @@ This package includes launch files for startup of CRANE-X7.
 ### crane_x7_examples
 
 This package includes example codes for CRANE-X7.
+This package was made changes to original [https://github.com/rt-net/crane_x7_ros].
+This sample code make robot littering.
 Please refer to [./crane_x7_examples/README.md](./crane_x7_examples/README.md).
 
 ### crane_x7_gazebo
 
 This package includes Gazebo simulation environments for CRANE-X7.
-
+This package was made changes to original [https://github.com/rt-net/crane_x7_ros].
 To simulate CRANE-X7 on the table:
 
 `roslaunch crane_x7_gazebo crane_x7_with_table.launch`
