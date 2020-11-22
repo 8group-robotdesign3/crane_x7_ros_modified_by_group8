@@ -6,7 +6,7 @@
 
 ![crane_x7_gazebo](https://rt-net.github.io/images/crane-x7/crane_x7_gazebo.png "crane_x7_gazebo")
 
-CRANE-X7のROSパッケージです。
+CRANE-X7のROSパッケージです。このパッケージはオリジナルである [https://github.com/rt-net/crane_x7_ros]　に対して千葉工業大学設計製作論3の6班がcrane_x7_examplesフォルダの内容に変更を加えたものになります。
 
 製品ページはこちらです。  
 [https://www.rt-net.jp/products/crane-x7](https://www.rt-net.jp/products/crane-x7)
