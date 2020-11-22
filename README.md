@@ -6,7 +6,7 @@
 
 ![crane_x7_gazebo](https://rt-net.github.io/images/crane-x7/crane_x7_gazebo.png "crane_x7_gazebo")
 
-CRANE-X7のROSパッケージです。このパッケージはオリジナルである [https://github.com/rt-net/crane_x7_ros]　に対して千葉工業大学設計製作論3の6班がcrane_x7_examplesフォルダの内容に変更を加えたものになります。
+CRANE-X7のROSパッケージです。このパッケージはオリジナルである [https://github.com/rt-net/crane_x7_ros]　に対して千葉工業大学設計製作論3の8班がcrane_x7_examplesフォルダの内容に変更を加えたものになります。
 
 製品ページはこちらです。  
 [https://www.rt-net.jp/products/crane-x7](https://www.rt-net.jp/products/crane-x7)
@@ -112,7 +112,7 @@ CRANE-X7の起動に必要なlaunchファイルをまとめたパッケージで
 
 ### crane_x7_examples
 
-こちらのフォルダはオリジナルである [https://github.com/rt-net/crane_x7_ros] に対して千葉工業大学の授業内グループ6班が変更を加えています。
+こちらのフォルダはオリジナルである [https://github.com/rt-net/crane_x7_ros] に対して千葉工業大学の授業内グループ8班が変更を加えています。
 crane_x7にポイ捨てをさせるサンプルコードです。
 使い方については[./crane_x7_examples/README.md](./crane_x7_examples/README.md)を参照してください。
 
