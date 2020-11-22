@@ -112,7 +112,8 @@ CRANE-X7の起動に必要なlaunchファイルをまとめたパッケージで
 
 ### crane_x7_examples
 
-サンプルコード集です。
+こちらのフォルダはオリジナルである [https://github.com/rt-net/crane_x7_ros] に対して千葉工業大学の授業内グループ6班が変更を加えています。
+crane_x7にポイ捨てをさせるサンプルコードです。
 使い方については[./crane_x7_examples/README.md](./crane_x7_examples/README.md)を参照してください。
 
 ### crane_x7_gazebo
