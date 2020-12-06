@@ -7,6 +7,13 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   message_generation
+  sensor_msgs 
+  OpenCV 
+  cv_bridge
+  image_transport
+  pcl_conversions
+  pcl_msgs
+  pcl_ros
 )
 
 generate_messages(DEPENDENCIES std_msgs geometry_msgs)
@@ -21,10 +28,10 @@ generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES crane_x7_examples
- CATKIN_DEPENDS message_runtime
-#  DEPENDS system_lib
+  #INCLUDE_DIRS include
+  #LIBRARIES crane_x7_examples
+  CATKIN_DEPENDS message_runtime
+  #  DEPENDS system_lib
 )
 
 ###########
@@ -32,11 +39,20 @@ catkin_package(
 ###########
 
 include_directories(
-# include
+  #include
   ${catkin_INCLUDE_DIRS}
-)
+  ${OpenCV_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
+  )
 add_executable(main_node src/main_node.cpp)
+add_executable(image_processing src/image_processing.cpp)
+add_executable(depth_estimater src/depth.cpp)
+add_executable(locate_estimate src/locate_estimate.cpp)
+
 target_link_libraries(main_node ${catkin_LIBRARIES})
+target_link_libraries(image_processing ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(depth_estimater  ${PCL_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(locate_estimate  ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 
 #############
 ## Install ##
