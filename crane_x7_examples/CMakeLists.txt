@@ -14,6 +14,22 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_conversions
   pcl_msgs
   pcl_ros
+  actionlib
+  control_msgs
+  moveit_commander
+  moveit_core
+  moveit_msgs
+  moveit_ros_planning_interface
+  shape_msgs
+  tf
+  trajectory_msgs
+)
+
+find_package(Boost REQUIRED
+  system
+  filesystem
+  date_time
+  thread
 )
 
 generate_messages(DEPENDENCIES std_msgs geometry_msgs)
@@ -31,6 +47,17 @@ catkin_package(
   #INCLUDE_DIRS include
   #LIBRARIES crane_x7_examples
   CATKIN_DEPENDS message_runtime
+  actionlib
+  control_msgs
+  geometry_msgs
+  moveit_commander
+  moveit_core
+  moveit_msgs
+  moveit_ros_planning_interface
+  roscpp
+  shape_msgs
+  tf
+  trajectory_msgs
   #  DEPENDS system_lib
 )
 
@@ -43,16 +70,20 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIR}
   )
+
 add_executable(main_node src/main_node.cpp)
 add_executable(image_processing src/image_processing.cpp)
 add_executable(depth_estimater src/depth.cpp)
 add_executable(locate_estimate src/locate_estimate.cpp)
+add_executable(move_arm src/move_arm.cpp)
 
 target_link_libraries(main_node ${catkin_LIBRARIES})
 target_link_libraries(image_processing ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(depth_estimater  ${PCL_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(locate_estimate  ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(move_arm ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 #############
 ## Install ##

@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+#include <std_msgs/Float64MultiArray.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/PointCloud2.h>
@@ -25,6 +26,7 @@ class ImageConverter
     image_transport::ImageTransport it_;
     image_transport::Subscriber image_sub_;
     ros::Subscriber sub_depth;
+    ros::Publisher pub_coordinate;
 
 
     int32_t point_count;
@@ -36,6 +38,7 @@ public:
     {
         image_sub_ = it_.subscribe("/camera/color/image_raw", 1, &ImageConverter::imageCb, this);
         sub_depth = nh_.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points", 1, &ImageConverter::depthImageCallback, this);
+        pub_coordinate = nh_.advertise<std_msgs::Float64MultiArray>("location_of_bottle",1);
     }
 
     ~ImageConverter()
@@ -90,7 +93,17 @@ public:
                 //ROS_INFO("%d,%d x = %lfmm, z = %lfmm", x_y.first, x_y.second, cl.x * 1000, cl.z * 1000);
             }
         }
-        ROS_INFO("x = %lfmm,z = %lfmm count = %d",sum_x /point_sum * 1000,sum_z/point_sum* 1000,point_count);
+        sum_x /= point_sum;
+        sum_z /= point_sum;
+        if(point_sum > 40000){
+            //m単位になってる
+            std_msgs::Float64MultiArray send_msg;
+            send_msg.data.resize(2);
+            send_msg.data[0] = sum_x;
+            send_msg.data[1] =sum_z;
+            pub_coordinate.publish(send_msg);
+        ROS_INFO("x = %lfmm,z = %lfmm count = %d",sum_x * 1000,sum_z* 1000,point_sum);
+        }
     }
 };
 

@@ -1,0 +1,4 @@
+<launch>
+    <node name="move_arm"   pkg="crane_x7_examples" type="move_arm" output="screen"/>
+    <node name="locate_estimate"   pkg="crane_x7_examples" type="locate_estimate" output="screen"/>
+</launch>
