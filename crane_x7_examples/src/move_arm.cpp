@@ -7,11 +7,12 @@ class Move_arm
 {
     ros::NodeHandle nh_;
     ros::Subscriber sub_get_xz;
-    moveit::planning_interface::MoveGroupInterface arm;
     tf::TransformListener tflisten;
     tf::StampedTransform transform;
 
 public:
+    moveit::planning_interface::MoveGroupInterface arm;
+
     Move_arm() : arm("arm")
     {
         sub_get_xz = nh_.subscribe<std_msgs::Float64MultiArray>("location_of_bottle", 1, &Move_arm::callback_move, this);
@@ -23,27 +24,27 @@ public:
 
     void callback_move(const std_msgs::Float64MultiArray::ConstPtr &msg)
     {
+
+        ROS_INFO("subscribe mesg");
+        arm.setMaxVelocityScalingFactor(0.1);
+        arm.setPoseReferenceFrame("base_link");
+        arm.setNamedTarget("home");
+        arm.move();
+
         try
         {
-            tflisten.lookupTransform("/base_link", "/camera_link",ros::Time(0), transform);
+            tflisten.lookupTransform("/base_link", "/camera_link", ros::Time(0), transform);
         }
         catch (tf::TransformException &ex)
         {
             ROS_ERROR("%s", ex.what());
         }
-        ROS_INFO("subscribe mesg");
-        arm.setMaxVelocityScalingFactor(0.1);
-        arm.setNamedTarget("home");
-        arm.setPoseReferenceFrame("base_link");
-        arm.move();
-
-        ROS_INFO("Moving to prepare pose");
         geometry_msgs::PoseStamped pose;
         pose.header.frame_id = "base_link";
         pose.pose.position.x = msg->data[0] + transform.getOrigin().x();
         pose.pose.position.z = 0.0 + transform.getOrigin().z();
         pose.pose.position.y = msg->data[1] + transform.getOrigin().y();
-
+        ROS_INFO("x %f y %f z %f", pose.pose.position.x, pose.pose.position.y, pose.pose.position.z);
         pose.pose.orientation.x = 0.0;
         pose.pose.orientation.y = 0.707106;
         pose.pose.orientation.z = 0.0;
@@ -61,6 +62,8 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "move_arm");
     Move_arm MOVEIT;
+
+
     ros::AsyncSpinner spinner(4);
     spinner.start();
     ros::waitForShutdown();

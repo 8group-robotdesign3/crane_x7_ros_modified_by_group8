@@ -82,7 +82,7 @@ add_executable(move_arm src/move_arm.cpp)
 target_link_libraries(main_node ${catkin_LIBRARIES})
 target_link_libraries(image_processing ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(depth_estimater  ${PCL_LIBRARIES} ${catkin_LIBRARIES})
-target_link_libraries(locate_estimate  ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(locate_estimate  ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 target_link_libraries(move_arm ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 #############

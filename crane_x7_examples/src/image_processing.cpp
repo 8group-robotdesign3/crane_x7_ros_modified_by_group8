@@ -43,26 +43,27 @@ public:
 
         cv::cvtColor(cv_ptr->image, hsv_image, CV_BGR2HSV);
 
-        cv::inRange(hsv_image, cv::Scalar(30, 64, 0, 0), cv::Scalar(90, 255, 255, 0), color_mask);
+        cv::inRange(hsv_image, cv::Scalar(150, 100, 100, 0), cv::Scalar(175, 255, 255, 0), color_mask);
         cv::bitwise_and(cv_ptr->image, cv_ptr->image, cv_find_color, color_mask);
         cv::cvtColor(cv_ptr->image, gray_image, CV_BGR2GRAY);
         cv::Canny(gray_image, cv_ptr3->image, 15.0, 30.0, 3);
 
-
-        int_fast64_t sum_x = 0 ,sum_y = 0;
+        int_fast64_t sum_x = 0, sum_y = 0;
         int32_t point_count = 0;
-        for(size_t y = 0; y < color_mask.rows;++y){
+        for (size_t y = 0; y < color_mask.rows; ++y)
+        {
             for (size_t x = 0; x < color_mask.cols; ++x)
-            {   
-                if(color_mask.at<uint8_t>(y,x) != 0){
+            {
+                if (color_mask.at<uint8_t>(y, x) != 0)
+                {
                     sum_x += x;
                     sum_y += y;
                     ++point_count;
                 }
             }
-            
         }
-        ROS_INFO("pt_x = %lld pt_y = %lld",sum_x / point_count,sum_y / point_count);
+        if (point_count != 0)
+            ROS_INFO("pt_x = %lld pt_y = %lld", sum_x / point_count, sum_y / point_count);
         cv::Mat cv_half_image, cv_half_find_color, cv_half_image3;
         cv::resize(cv_ptr->image, cv_half_image, cv::Size(), 0.5, 0.5);
         cv::resize(cv_find_color, cv_half_find_color, cv::Size(), 0.5, 0.5);
@@ -72,7 +73,6 @@ public:
         cv::imshow("Result Image", cv_find_color);
         cv::imshow("Edge Image", cv_half_image3);
         cv::waitKey(3);
-
     }
 };
 
