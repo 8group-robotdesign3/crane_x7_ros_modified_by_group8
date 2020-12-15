@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include <std_msgs/Float64MultiArray.h>
+#include <std_msgs/Int32.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/PointCloud2.h>
@@ -20,46 +20,60 @@
 
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <tf/transform_listener.h>
+#include <tf/transform_broadcaster.h>
 
 static const std::string OPENCV_WINDOW = "Image window";
 
 class ImageConverter
 {
     ros::NodeHandle nh_;
+
     image_transport::ImageTransport it_;
     image_transport::Subscriber image_sub_;
+
     ros::Subscriber sub_depth;
-    ros::Publisher pub_coordinate;
+    ros::Publisher pub_activation;
+
     tf::TransformListener tflisten;
     tf::StampedTransform transform;
+
+    moveit::planning_interface::MoveGroupInterface arm;
+    moveit::planning_interface::MoveGroupInterface gripper;
 
     int32_t point_count;
     bool called_flag;
     std::vector<std::pair<int32_t, int32_t>> x_z_point;
 
 public:
-    moveit::planning_interface::MoveGroupInterface arm;
-
     ImageConverter()
-        : it_(nh_), x_z_point(), point_count(0), arm("arm")
+        : it_(nh_), x_z_point(), point_count(0), arm("arm"), gripper("gripper")
     {
         image_sub_ = it_.subscribe("/camera/color/image_raw", 1, &ImageConverter::imageCb, this);
         sub_depth = nh_.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points", 1, &ImageConverter::depthImageCallback, this);
-        pub_coordinate = nh_.advertise<std_msgs::Float64MultiArray>("location_of_bottle", 1);
+        pub_activation = nh_.advertise<std_msgs::Int32>("activate_node", 1);
         called_flag = false;
         ROS_INFO("aaa");
         arm.setMaxVelocityScalingFactor(0.1);
         arm.setPoseReferenceFrame("base_link");
+
+        std::vector<double> JointValues = {1.3, 1.3};
+        gripper.setJointValueTarget(JointValues);
+        if (!gripper.move())
+        {
+            ROS_WARN("Could not open gripper");
+        }
+        ROS_INFO("open gripper");
+
         geometry_msgs::PoseStamped home;
         home.header.frame_id = "base_link";
-        home.pose.position.x = 0.211;
-        home.pose.position.y = 0.010;
-        home.pose.position.z = 0.020;
-        auto q = quaternion_fro
-        home.pose.orientation.x = -0.702;
-        home.pose.orientation.y = 0.0295 ;
-        home.pose.orientation.z = 0.0223 ;
-        home.pose.orientation.w = 0.7107 ;
+        home.pose.position.x = 0.2009;
+        home.pose.position.y = 0.0112;
+        home.pose.position.z = 0.07174;
+        auto q = tf::createQuaternionFromRPY(-3.14 / 2.0, 0.0, -3.14 / 2.0);
+        home.pose.orientation.x = q.getX();
+        home.pose.orientation.y = q.getY();
+        home.pose.orientation.z = q.getZ();
+        home.pose.orientation.w = q.getW();
         arm.setPoseTarget(home);
         if (!arm.move())
         {
@@ -131,7 +145,7 @@ public:
             //send_msg.data.resize(2);
             //send_msg.data[0] = sum_x;
             //send_msg.data[1] = sum_z;
-            //pub_coordinate.publish(send_msg);
+            //pub_activation.publish(send_msg);
             ROS_INFO("x = %lfmm,y = %lfmm z = %lfmm", sum_x, sum_y, sum_z);
             called_flag = true;
             //---------------------------------------------------------
@@ -150,15 +164,28 @@ public:
             pose.pose.position.z = sum_y + transform.getOrigin().z();
             pose.pose.position.y = sum_x + transform.getOrigin().y() - 0.09;
             ROS_INFO("x %f y %f z %f", pose.pose.position.x, pose.pose.position.y, pose.pose.position.z);
-            pose.pose.orientation.x = 0.0;
-            pose.pose.orientation.y = 0.707106;
-            pose.pose.orientation.z = 0.0;
-            pose.pose.orientation.w = 0.707106;
+            auto q = tf::createQuaternionFromRPY(-3.14 / 2.0, 0.0, -3.14 / 2.0);
+            pose.pose.orientation.x = q.getX();
+            pose.pose.orientation.y = q.getY();
+            pose.pose.orientation.z = q.getZ();
+            pose.pose.orientation.w = q.getW();
             arm.setPoseTarget(pose);
             if (!arm.move())
             {
                 ROS_WARN("Could not move to prepare pose");
             }
+
+            std::vector<double> JointValues = {0.29, 0.29};
+            gripper.setJointValueTarget(JointValues);
+            if (!gripper.move())
+            {
+                ROS_WARN("Could not close gripper");
+            }
+            ROS_INFO("close gripper");
+
+            std_msgs::Int32 msg;
+            msg.data = point_sum % 3; //乱数と同様
+            pub_activation.publish(msg);
             ros::shutdown();
             //---------------------------------------------------------------
         }
