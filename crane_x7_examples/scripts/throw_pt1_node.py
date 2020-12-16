@@ -13,6 +13,7 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 
 from std_msgs.msg import Int32
 
+global Once_flag
 
 
 class ArmJointTrajectoryExample(object):
@@ -103,13 +104,15 @@ def main():
     jt.wait(2.0)
         
     print("done")
-global flag = True
+
 def sub(data):
-    if data.data == 0 and flag:
-        flag = False
+    global Once_flag
+    if data.data == 0 and Once_flag:
+        Once_flag = False
         main()
 
 if __name__ == '__main__':
+    Once_flag = True
     rospy.init_node("throw_pt1_node")
-    rospy.Subscriber("activate_node",Int32,sub);
+    rospy.Subscriber("activate_node",Int32,sub,queue_size = 1);
     rospy.spin()
