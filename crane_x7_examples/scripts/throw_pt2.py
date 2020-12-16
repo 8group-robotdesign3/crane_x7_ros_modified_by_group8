@@ -7,9 +7,12 @@ import geometry_msgs.msg
 import rosnode
 import math
 from std_msgs.msg import Float64
+from std_msgs.msg import Int32
 from control_msgs.msg import GripperCommandAction, GripperCommandGoal, FollowJointTrajectoryAction, FollowJointTrajectoryGoal
 from tf.transformations import quaternion_from_euler
 from trajectory_msgs.msg import JointTrajectoryPoint
+
+global Once_flag
 
 
 class ArmJointTrajectoryExample(object):
@@ -108,6 +111,14 @@ def main():
         
     print("done")
 
+def sub(data):
+    global Once_flag
+    if data.data == 1 and Once_flag:
+        Once_flag = False
+        main()
+
 if __name__ == '__main__':
-    main()
-    
+    Once_flag = True
+    rospy.init_node("throw_pt1_node")
+    rospy.Subscriber("activate_node",Int32,sub,queue_size = 1);
+    rospy.spin()
