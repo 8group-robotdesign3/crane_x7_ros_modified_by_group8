@@ -94,7 +94,7 @@ public:
         cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
 
         cv::cvtColor(cv_ptr->image, hsv_image, CV_BGR2HSV);
-        cv::inRange(hsv_image, cv::Scalar(150, 100, 100, 0), cv::Scalar(175, 255, 255, 0), color_mask);
+        cv::inRange(hsv_image, cv::Scalar(140, 100, 100, 0), cv::Scalar(180, 255, 255, 0), color_mask);
 
         x_z_point.clear();
         point_count = 0;
