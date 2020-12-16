@@ -6,11 +6,11 @@ import moveit_commander
 import geometry_msgs.msg
 import rosnode
 from tf.transformations import quaternion_from_euler
+from std_msgs.msg import Int32
 
-
+global Once_flag_punch 
 
 def main():
-    rospy.init_node("crane_x7_pick_and_place_controller")
     robot = moveit_commander.RobotCommander()
     arm = moveit_commander.MoveGroupCommander("arm")
     arm.set_max_velocity_scaling_factor(0.1)
@@ -89,9 +89,14 @@ def main():
         
     print("done")
 
+def sub(data):
+    global Once_flag_punch
+    if data.data == 5 and Once_flag_punch:
+        Once_flag_punch = False
+        main()
+
 if __name__ == '__main__':
-    try:
-        if not rospy.is_shutdown():
-            main()
-    except rospy.ROSInterruptException:
-        pass
+    Once_flag_punch = True
+    rospy.init_node("punch1")
+    rospy.Subscriber("activate_node",Int32,sub,queue_size = 1);
+    rospy.spin()

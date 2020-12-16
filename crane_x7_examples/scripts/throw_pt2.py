@@ -14,7 +14,6 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 
 global Once_flag
 
-
 class ArmJointTrajectoryExample(object):
     def __init__(self):
         self._client = actionlib.SimpleActionClient(
@@ -72,10 +71,9 @@ class GripperClient(object):
     def clear(self):
         self._goal = GripperCommandGoal()
 
-   
-       
+
+
 def main():
-           
     jt = ArmJointTrajectoryExample()
     gc = GripperClient()
         
@@ -119,5 +117,5 @@ def sub(data):
 if __name__ == '__main__':
     Once_flag = True
     rospy.init_node("throw_pt2")
-    rospy.Subscriber("activate_node",Int32,sub,queue_size = 1);
+    rospy.Subscriber("activate_node",Int32,sub,queue_size = 1)
     rospy.spin()

@@ -7,6 +7,7 @@ import actionlib
 import moveit_commander
 import geometry_msgs.msg
 from std_msgs.msg import Float64
+from std_msgs.msg import Int32
 import rosnode
 from tf.transformations import quaternion_from_euler
 
@@ -29,7 +30,7 @@ import random
 import copy
 
 finish = True
-
+global Once_flag_sitamae
 class ArmJointTrajectoryExample(object):
     def __init__(self):
 
@@ -134,9 +135,15 @@ class ArmJointTrajectoryExample(object):
 
     def feedback(self,msg):
         print("feedback callback")
+def sub(data):
+    global Once_flag_sitamae
+    if data.data == 2 and Once_flag_sitamae:
+        Once_flag_sitamae = False
+        arm_joint_trajectory_example = ArmJointTrajectoryExample()
+        arm_joint_trajectory_example.go()
 
 if __name__ == "__main__":
-    rospy.init_node("arm_joint_trajectory_example")
-    arm_joint_trajectory_example = ArmJointTrajectoryExample()
-
-    arm_joint_trajectory_example.go()
+    Once_flag_sitamae = True
+    rospy.init_node("sitamae_throw")
+    rospy.Subscriber("activate_node",Int32,sub,queue_size = 1);
+    rospy.spin()

@@ -9,6 +9,7 @@ import geometry_msgs.msg
 from std_msgs.msg import Float64
 import rosnode
 from tf.transformations import quaternion_from_euler
+from std_msgs.msg import Int32
 
 # Arm communication
 from control_msgs.msg import (
@@ -29,6 +30,7 @@ import random
 import copy
 
 finish = True
+global Once_flag_uemae
 
 class ArmJointTrajectoryExample(object):
     def __init__(self):
@@ -150,8 +152,16 @@ class ArmJointTrajectoryExample(object):
     def feedback(self,msg):
         print("feedback callback")
 
-if __name__ == "__main__":
-    rospy.init_node("arm_joint_trajectory_example")
-    arm_joint_trajectory_example = ArmJointTrajectoryExample()
+def sub(data):
+    global Once_flag_uemae
+    if data.data == 3 and Once_flag_uemae:
+        Once_flag_uemae = False
+        arm_joint_trajectory_example = ArmJointTrajectoryExample()
+        arm_joint_trajectory_example.go()
 
-    arm_joint_trajectory_example.go()
+if __name__ == "__main__":
+    Once_flag_uemae = True 
+    rospy.init_node("uemae_throw")
+    rospy.Subscriber("activate_node",Int32,sub,queue_size = 1);
+    rospy.spin()
+

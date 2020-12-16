@@ -6,11 +6,11 @@ import moveit_commander
 import geometry_msgs.msg
 import rosnode
 from tf.transformations import quaternion_from_euler
+from std_msgs.msg import Int32
 
-
+global Once_flag_huru
 
 def main():
-    rospy.init_node("crane_x7_pick_and_place_controller")
     robot = moveit_commander.RobotCommander()
     arm = moveit_commander.MoveGroupCommander("arm")
     arm.set_max_velocity_scaling_factor(0.1)
@@ -87,9 +87,14 @@ def main():
         
     print("done")
 
+def sub(data):
+    global Once_flag_huru
+    if data.data == 6 and Once_flag_huru:
+        Once_flag_huru = False
+        main()
+
 if __name__ == '__main__':
-    try:
-        if not rospy.is_shutdown():
-            main()
-    except rospy.ROSInterruptException:
-        pass
+    Once_flag_huru= True
+    rospy.init_node("huru")
+    SUB =rospy.Subscriber("activate_node",Int32,sub,queue_size=1)
+    rospy.spin()
