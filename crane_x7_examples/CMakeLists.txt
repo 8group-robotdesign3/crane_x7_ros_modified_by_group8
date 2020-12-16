@@ -73,13 +73,11 @@ include_directories(
   ${Boost_INCLUDE_DIR}
   )
 
-add_executable(main_node src/main_node.cpp)
 add_executable(image_processing src/image_processing.cpp)
 add_executable(depth_estimater src/depth.cpp)
 add_executable(locate_estimate src/locate_estimate.cpp)
 add_executable(move_arm src/move_arm.cpp)
 
-target_link_libraries(main_node ${catkin_LIBRARIES})
 target_link_libraries(image_processing ${OpenCV_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(depth_estimater  ${PCL_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(locate_estimate  ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
