@@ -187,23 +187,23 @@ public:
             ROS_INFO("close gripper");
 
             std_msgs::Int32 msg;
-            if (called_count > 300)
-            {
-                ROS_INFO("called %d",called_count);
-                msg.data = point_sum % 3 + 4; //乱数
-                for (int iii = 0; iii < 100; ++iii)
-                    pub_activation.publish(msg);
-            }
-            else
-            {
-                ROS_INFO("called %d",called_count);
-                msg.data = point_sum % 4; //乱数
-                for (int iii = 0; iii < 100; ++iii)
-                    pub_activation.publish(msg);
-            }
+
+            ROS_INFO("called %d",called_count);
+            msg.data = point_sum % 4; //乱数
+            for (int iii = 0; iii < 100; ++iii)
+                pub_activation.publish(msg);
             //msg.data = 1;
             ros::shutdown();
             //---------------------------------------------------------------
+        }
+        if (called_count > 300)
+        {
+            std_msgs::Int32 msg;
+            ROS_INFO("called %d",called_count);
+            msg.data = point_sum % 3 + 4; //乱数
+            for (int iii = 0; iii < 100; ++iii)
+                pub_activation.publish(msg);
+            ros::shutdown();
         }
     }
 };
