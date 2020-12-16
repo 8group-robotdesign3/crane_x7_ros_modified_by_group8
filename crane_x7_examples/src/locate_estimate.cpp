@@ -39,14 +39,14 @@ class ImageConverter
 
     moveit::planning_interface::MoveGroupInterface arm;
     moveit::planning_interface::MoveGroupInterface gripper;
-
+    bool initialize_ok;
     int32_t point_count;
     bool called_flag;
     std::vector<std::pair<int32_t, int32_t>> x_z_point;
 
 public:
     ImageConverter()
-        : it_(nh_), x_z_point(), point_count(0), arm("arm"), gripper("gripper")
+        : it_(nh_), x_z_point(), point_count(0), arm("arm"), gripper("gripper"),initialize_ok(false)
     {
         image_sub_ = it_.subscribe("/camera/color/image_raw", 1, &ImageConverter::imageCb, this);
         sub_depth = nh_.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points", 1, &ImageConverter::depthImageCallback, this);
@@ -68,7 +68,7 @@ public:
         home.header.frame_id = "base_link";
         home.pose.position.x = 0.2009;
         home.pose.position.y = 0.0112;
-        home.pose.position.z = 0.07174;
+        home.pose.position.z = 0.07174 + 0.05;
         auto q = tf::createQuaternionFromRPY(-3.14 / 2.0, 0.0, -3.14 / 2.0);
         home.pose.orientation.x = q.getX();
         home.pose.orientation.y = q.getY();
@@ -80,6 +80,7 @@ public:
             ROS_WARN("Could not move to home pose");
         }
         ROS_INFO("Moving to home pose");
+	initialize_ok = true;
     }
 
     ~ImageConverter()
@@ -135,10 +136,11 @@ public:
                 //ROS_INFO("%d,%d x = %lfmm, z = %lfmm", x_y.first, x_y.second, cl.x * 1000, cl.z * 1000);
             }
         }
+	ROS_INFO("point %d",point_sum);
         sum_x /= point_sum;
         sum_z /= point_sum;
         sum_y /= point_sum;
-        if ((point_sum > 70000) && (!called_flag))
+        if ((point_sum > 12000) && (!called_flag) && initialize_ok)
         {
             //m単位になってる
             //std_msgs::Float64MultiArray send_msg;
@@ -160,9 +162,9 @@ public:
             geometry_msgs::PoseStamped pose;
             pose.header.frame_id = "base_link";
             ROS_INFO("x %f y %f z %f", transform.getOrigin().x(), transform.getOrigin().y(), transform.getOrigin().z());
-            pose.pose.position.x = sum_z + transform.getOrigin().x();
-            pose.pose.position.z = sum_y + transform.getOrigin().z();
-            pose.pose.position.y = sum_x + transform.getOrigin().y() - 0.09;
+            pose.pose.position.x = transform.getOrigin().x() + sum_z;
+            pose.pose.position.z = transform.getOrigin().z()+0.1 ;
+            pose.pose.position.y = transform.getOrigin().y() - 0.03 + sum_x;// - 0.09;
             ROS_INFO("x %f y %f z %f", pose.pose.position.x, pose.pose.position.y, pose.pose.position.z);
             auto q = tf::createQuaternionFromRPY(-3.14 / 2.0, 0.0, -3.14 / 2.0);
             pose.pose.orientation.x = q.getX();
@@ -195,9 +197,10 @@ public:
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "image_converter");
-    ros::AsyncSpinner spinner(2);
+    ros::AsyncSpinner spinner(4);
     spinner.start();
     ImageConverter ic;
+    
     ros::waitForShutdown();
     ros::shutdown();
     return 0;
