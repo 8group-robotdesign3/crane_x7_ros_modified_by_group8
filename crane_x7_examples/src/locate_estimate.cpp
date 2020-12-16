@@ -41,12 +41,13 @@ class ImageConverter
     moveit::planning_interface::MoveGroupInterface gripper;
     bool initialize_ok;
     int32_t point_count;
+    int32_t called_count;
     bool called_flag;
     std::vector<std::pair<int32_t, int32_t>> x_z_point;
 
 public:
     ImageConverter()
-        : it_(nh_), x_z_point(), point_count(0), arm("arm"), gripper("gripper"),initialize_ok(false)
+        : it_(nh_), x_z_point(), point_count(0), arm("arm"), gripper("gripper"), initialize_ok(false), called_count(0)
     {
         image_sub_ = it_.subscribe("/camera/color/image_raw", 1, &ImageConverter::imageCb, this);
         sub_depth = nh_.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points", 1, &ImageConverter::depthImageCallback, this);
@@ -80,7 +81,7 @@ public:
             ROS_WARN("Could not move to home pose");
         }
         ROS_INFO("Moving to home pose");
-	initialize_ok = true;
+        initialize_ok = true;
     }
 
     ~ImageConverter()
@@ -117,7 +118,6 @@ public:
 
         int width = msg->width;
         int height = msg->height;
-
         pcl::PointCloud<pcl::PointXYZ> cloud;
         pcl::fromROSMsg(*msg, cloud);
         //ROS_INFO("%d", cloud.is_dense);
@@ -136,7 +136,8 @@ public:
                 //ROS_INFO("%d,%d x = %lfmm, z = %lfmm", x_y.first, x_y.second, cl.x * 1000, cl.z * 1000);
             }
         }
-	ROS_INFO("point %d",point_sum);
+        ROS_INFO("point %d", point_sum);
+        ++called_count;
         sum_x /= point_sum;
         sum_z /= point_sum;
         sum_y /= point_sum;
@@ -163,8 +164,8 @@ public:
             pose.header.frame_id = "base_link";
             ROS_INFO("x %f y %f z %f", transform.getOrigin().x(), transform.getOrigin().y(), transform.getOrigin().z());
             pose.pose.position.x = transform.getOrigin().x() + sum_z;
-            pose.pose.position.z = transform.getOrigin().z()+0.1 ;
-            pose.pose.position.y = transform.getOrigin().y() - 0.03 + sum_x;// - 0.09;
+            pose.pose.position.z = transform.getOrigin().z() + 0.1;
+            pose.pose.position.y = transform.getOrigin().y() - 0.03 + sum_x; // - 0.09;
             ROS_INFO("x %f y %f z %f", pose.pose.position.x, pose.pose.position.y, pose.pose.position.z);
             auto q = tf::createQuaternionFromRPY(-3.14 / 2.0, 0.0, -3.14 / 2.0);
             pose.pose.orientation.x = q.getX();
@@ -186,9 +187,17 @@ public:
             ROS_INFO("close gripper");
 
             std_msgs::Int32 msg;
-            //msg.data = point_sum % 3; //乱数と同様
-	    msg.data = 1;
-            for(int iii= 0;iii < 100;++iii)pub_activation.publish(msg);
+            if (called_count > 500)
+            {
+                msg.data = point_sum % 3 + 4; //乱数
+            }
+            else
+            {
+                msg.data = point_sum % 4; //乱数
+            }
+            //msg.data = 1;
+            for (int iii = 0; iii < 100; ++iii)
+                pub_activation.publish(msg);
             ros::shutdown();
             //---------------------------------------------------------------
         }
@@ -201,7 +210,7 @@ int main(int argc, char **argv)
     ros::AsyncSpinner spinner(4);
     spinner.start();
     ImageConverter ic;
-    
+
     ros::waitForShutdown();
     ros::shutdown();
     return 0;

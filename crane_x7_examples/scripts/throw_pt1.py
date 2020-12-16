@@ -11,6 +11,9 @@ from control_msgs.msg import GripperCommandAction, GripperCommandGoal, FollowJoi
 from tf.transformations import quaternion_from_euler
 from trajectory_msgs.msg import JointTrajectoryPoint
 
+from std_msgs.msg import Int32
+
+global Once_flag
 
 class ArmJointTrajectoryExample(object):
     def __init__(self):
@@ -72,8 +75,6 @@ class GripperClient(object):
    
        
 def main():
-    rospy.init_node("throw_pt1.py")
-           
     jt = ArmJointTrajectoryExample()
     gc = GripperClient()
        
@@ -103,6 +104,14 @@ def main():
         
     print("done")
 
+def sub(data):
+    global Once_flag
+    if data.data == 0 and Once_flag:
+        Once_flag = False
+        main()
+
 if __name__ == '__main__':
-    main()
-    
+    Once_flag = True
+    rospy.init_node("throw_pt1")
+    rospy.Subscriber("activate_node",Int32,sub,queue_size = 1);
+    rospy.spin()

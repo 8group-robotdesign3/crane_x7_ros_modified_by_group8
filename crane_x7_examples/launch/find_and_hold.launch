@@ -1,6 +1,6 @@
 <launch>
     <node name="locate_estimate"   pkg="crane_x7_examples" type="locate_estimate" output="screen"/>
-    <node name="throw_pt1_node"   pkg="crane_x7_examples" type="throw_pt1_node.py" output="screen"/>
+    <node name="throw_pt1"   pkg="crane_x7_examples" type="throw_pt1.py" output="screen"/>
     <node name="throw_pt2"   pkg="crane_x7_examples" type="throw_pt2.py" output="screen"/>
     <node name="sitamae_throw"   pkg="crane_x7_examples" type="sitamae_throw.py" output="screen"/>
     <node name="uemae_throw"   pkg="crane_x7_examples" type="uemae_throw.py" output="screen"/>
