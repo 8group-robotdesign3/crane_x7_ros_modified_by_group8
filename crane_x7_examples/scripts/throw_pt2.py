@@ -75,7 +75,6 @@ class GripperClient(object):
    
        
 def main():
-    rospy.init_node("throw_pt2.py")
            
     jt = ArmJointTrajectoryExample()
     gc = GripperClient()
@@ -119,6 +118,6 @@ def sub(data):
 
 if __name__ == '__main__':
     Once_flag = True
-    rospy.init_node("throw_pt1_node")
+    rospy.init_node("throw_pt2")
     rospy.Subscriber("activate_node",Int32,sub,queue_size = 1);
     rospy.spin()

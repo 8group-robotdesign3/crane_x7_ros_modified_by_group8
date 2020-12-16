@@ -187,7 +187,7 @@ public:
 
             std_msgs::Int32 msg;
             //msg.data = point_sum % 3; //乱数と同様
-	    msg.data = 0;
+	    msg.data = 1;
             for(int iii= 0;iii < 100;++iii)pub_activation.publish(msg);
             ros::shutdown();
             //---------------------------------------------------------------
