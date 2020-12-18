@@ -4,7 +4,8 @@
   <description>
     ROS package suite of CRANE-X7
   </description>
-  <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
+
+  <maintainer email="s19c1012sk@s.chibakoudai.jp">CIT future robotics group 8</maintainer>
   <author email="nomura@rt-net.jp">Hiroyuki Nomura</author>
   <author email="geoffrey.biggs@aist.go.jp">Geoffrey Biggs</author>
   <author email="tiryoh@gmail.com">Daisuke Sato</author>

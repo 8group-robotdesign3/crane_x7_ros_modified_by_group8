@@ -4,9 +4,15 @@
   <version>0.0.0</version>
   <description>examples of CRANE-X7 ROS package</description>
 
-  <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
+  <maintainer email="s19c1012sk@s.chibakoudai.jp">CIT future robotics group 8</maintainer>
   <author email="tiryoh@gmail.com">Daisuke Sato</author>
   <author email="nomura@rt-net.jp">Hiroyuki Nomura</author>
+  <author email="s19C1701TB@s.chibakoudai.jp">Kim Gibeom</author>
+  <author email="s19c1012sk@s.chibakoudai.jp">Inoue Satoshi</author>
+  <author email="s19c1017as@s.chibakoudai.jp">Uda Mahiro</author>
+  <author email="s19c1035cr@s.chibakoudai.jp">Kikuchi Hyuga</author>
+  <author email="s19c1098QS@s.chibakoudai.jp">Fukuchi Masaki</author>
+
 
   <license>NON-COMMERCIAL LICENSE AGREEMENT</license>
 

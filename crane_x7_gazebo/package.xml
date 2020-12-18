@@ -4,8 +4,10 @@
   <version>0.0.0</version>
   <description>The crane_x7_gazebo package</description>
 
-  <maintainer email="shop@rt-net.jp">RT Corporation</maintainer>
-  <maintainer email="macakasit@gmail.com">Shota Aoki</maintainer>
+  <maintainer email="s19c1012sk@s.chibakoudai.jp">CIT future robotics group 8</maintainer>
+  <author email="shop@rt-net.jp">RT Corporation</author>
+  <author email="macakasit@gmail.com">Shota Aoki</author>
+  <author email="s19C1701TB@s.chibakoudai.jp">Kim Gibeom</author>
 
   <license>NON-COMMERCIAL LICENSE AGREEMENT</license>
   <buildtool_depend>catkin</buildtool_depend>

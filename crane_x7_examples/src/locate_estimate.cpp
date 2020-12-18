@@ -47,13 +47,11 @@ class Locate_estimate_node
 
 public:
     Locate_estimate_node()
-        : it_(nh_), x_z_point(), point_count(0), arm("arm"), gripper("gripper"), initialize_ok(false), called_count(0)
+        : it_(nh_), x_z_point(), point_count(0), arm("arm"), gripper("gripper"), initialize_ok(false), called_count(0),called_flag(false)
     {
         image_sub_ = it_.subscribe("/camera/color/image_raw", 1, &Locate_estimate_node::imageCb, this);
         sub_depth = nh_.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points", 1, &Locate_estimate_node::depthImageCallback, this);
         pub_activation = nh_.advertise<std_msgs::Int32>("activate_node", 1);
-        called_flag = false;
-        ROS_INFO("aaa");
         arm.setMaxVelocityScalingFactor(0.1);
         arm.setPoseReferenceFrame("base_link");
 
@@ -115,14 +113,9 @@ public:
 
     void depthImageCallback(const sensor_msgs::PointCloud2ConstPtr &msg)
     {
-
-        int width = msg->width;
-        int height = msg->height;
         pcl::PointCloud<pcl::PointXYZ> cloud;
         pcl::fromROSMsg(*msg, cloud);
-        //ROS_INFO("%d", cloud.is_dense);
-        //+xが右、+yが下。imageの座標は
-        double sum_x = 0, sum_z = 0, sum_y;
+        double sum_x = 0.0, sum_z = 0.0, sum_y = 0.0;
         int32_t point_sum = 0;
         for (auto &x_y : x_z_point)
         {
@@ -133,25 +126,17 @@ public:
                 sum_z += cl.z;
                 sum_y += cl.y;
                 ++point_sum;
-                //ROS_INFO("%d,%d x = %lfmm, z = %lfmm", x_y.first, x_y.second, cl.x * 1000, cl.z * 1000);
             }
         }
-        ROS_INFO("point %d", point_sum);
+        ROS_INFO("point sum %d", point_sum);
         ++called_count;
         sum_x /= point_sum;
         sum_z /= point_sum;
         sum_y /= point_sum;
         if ((point_sum > 12000) && (!called_flag) && initialize_ok)
         {
-            //m単位になってる
-            //std_msgs::Float64MultiArray send_msg;
-            //send_msg.data.resize(2);
-            //send_msg.data[0] = sum_x;
-            //send_msg.data[1] = sum_z;
-            //pub_activation.publish(send_msg);
-            ROS_INFO("x = %lfmm,y = %lfmm z = %lfmm", sum_x, sum_y, sum_z);
+            ROS_INFO("location of object is x = %lfmm,y = %lfmm z = %lfmm", sum_x, sum_y, sum_z);
             called_flag = true;
-            //---------------------------------------------------------
             try
             {
                 tflisten.lookupTransform("/base_link", "/camera_link", ros::Time(0), transform);
@@ -162,11 +147,10 @@ public:
             }
             geometry_msgs::PoseStamped pose;
             pose.header.frame_id = "base_link";
-            ROS_INFO("x %f y %f z %f", transform.getOrigin().x(), transform.getOrigin().y(), transform.getOrigin().z());
             pose.pose.position.x = transform.getOrigin().x() + sum_z;
             pose.pose.position.z = transform.getOrigin().z() + 0.1;
-            pose.pose.position.y = transform.getOrigin().y() - 0.03 + sum_x; // - 0.09;
-            ROS_INFO("x %f y %f z %f", pose.pose.position.x, pose.pose.position.y, pose.pose.position.z);
+            pose.pose.position.y = transform.getOrigin().y() - 0.03 + sum_x; 
+            ROS_INFO("target position x %f y %f z %f", pose.pose.position.x, pose.pose.position.y, pose.pose.position.z);
             auto q = tf::createQuaternionFromRPY(-3.14 / 2.0, 0.0, -3.14 / 2.0);
             pose.pose.orientation.x = q.getX();
             pose.pose.orientation.y = q.getY();
@@ -186,26 +170,25 @@ public:
             }
             ROS_INFO("close gripper");
 
-            std_msgs::Int32 msg;
+            std_msgs::Int32 activation;
 
             ROS_INFO("called %d", called_count);
-            msg.data = point_sum % 4; //乱数
+            activation.data = point_sum % 4; //乱数
             for (int pub_i = 0; pub_i < 3; ++pub_i)
             {
-                pub_activation.publish(msg);
+                pub_activation.publish(activation);
             }
-            //msg.data = 1;
             ros::shutdown();
             //---------------------------------------------------------------
         }
         if (called_count > 300)
         {
-            std_msgs::Int32 msg;
+            std_msgs::Int32 activation;
             ROS_INFO("called %d", called_count);
-            msg.data = point_sum % 3 + 4; //乱数
+            activation.data = point_sum % 3 + 4; //乱数
             for (int pub_i = 0; pub_i < 3; ++pub_i)
             {
-                pub_activation.publish(msg);
+                pub_activation.publish(activation);
             }
             ros::shutdown();
         }
