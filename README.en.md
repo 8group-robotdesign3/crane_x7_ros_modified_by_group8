@@ -115,7 +115,7 @@ This package includes launch files for startup of CRANE-X7.
 
 This package includes example codes for CRANE-X7.
 This package was made changes to original [https://github.com/rt-net/crane_x7_ros].
-This sample code make robot littering.
+This sample code makes robot littering.
 Please refer to [./crane_x7_examples/README.md](./crane_x7_examples/README.md).
 
 ### crane_x7_gazebo
