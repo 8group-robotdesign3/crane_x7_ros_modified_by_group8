@@ -24,7 +24,7 @@
 
 static const std::string OPENCV_WINDOW = "Image window";
 
-class ImageConverter
+class Locate_estimate_node
 {
     ros::NodeHandle nh_;
 
@@ -46,11 +46,11 @@ class ImageConverter
     std::vector<std::pair<int32_t, int32_t>> x_z_point;
 
 public:
-    ImageConverter()
+    Locate_estimate_node()
         : it_(nh_), x_z_point(), point_count(0), arm("arm"), gripper("gripper"), initialize_ok(false), called_count(0)
     {
-        image_sub_ = it_.subscribe("/camera/color/image_raw", 1, &ImageConverter::imageCb, this);
-        sub_depth = nh_.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points", 1, &ImageConverter::depthImageCallback, this);
+        image_sub_ = it_.subscribe("/camera/color/image_raw", 1, &Locate_estimate_node::imageCb, this);
+        sub_depth = nh_.subscribe<sensor_msgs::PointCloud2>("/camera/depth_registered/points", 1, &Locate_estimate_node::depthImageCallback, this);
         pub_activation = nh_.advertise<std_msgs::Int32>("activate_node", 1);
         called_flag = false;
         ROS_INFO("aaa");
@@ -84,7 +84,7 @@ public:
         initialize_ok = true;
     }
 
-    ~ImageConverter()
+    ~Locate_estimate_node()
     {
         cv::destroyWindow(OPENCV_WINDOW);
     }
@@ -188,10 +188,12 @@ public:
 
             std_msgs::Int32 msg;
 
-            ROS_INFO("called %d",called_count);
+            ROS_INFO("called %d", called_count);
             msg.data = point_sum % 4; //乱数
-            for (int iii = 0; iii < 100; ++iii)
+            for (int pub_i = 0; pub_i < 3; ++pub_i)
+            {
                 pub_activation.publish(msg);
+            }
             //msg.data = 1;
             ros::shutdown();
             //---------------------------------------------------------------
@@ -199,10 +201,12 @@ public:
         if (called_count > 300)
         {
             std_msgs::Int32 msg;
-            ROS_INFO("called %d",called_count);
+            ROS_INFO("called %d", called_count);
             msg.data = point_sum % 3 + 4; //乱数
-            for (int iii = 0; iii < 100; ++iii)
+            for (int pub_i = 0; pub_i < 3; ++pub_i)
+            {
                 pub_activation.publish(msg);
+            }
             ros::shutdown();
         }
     }
@@ -210,10 +214,10 @@ public:
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "image_converter");
+    ros::init(argc, argv, "locate_estimate_node");
     ros::AsyncSpinner spinner(4);
     spinner.start();
-    ImageConverter ic;
+    Locate_estimate_node Le_node;
 
     ros::waitForShutdown();
     ros::shutdown();

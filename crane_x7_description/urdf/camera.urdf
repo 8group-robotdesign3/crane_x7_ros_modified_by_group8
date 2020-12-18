@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-
+<!--this file added by group8 -->
 <robot name="camera">
 
     <link name="camera_link">
@@ -14,7 +14,7 @@
                 <box size="0.01 0.05 0.03"/>
             </geometry>
             <material name="black">
-                <color rgba="0 0 0 1" />
+                <color rgba="1 0 0 1" />
             </material>
         </visual>
     </link>
@@ -22,10 +22,10 @@
     <joint name="camera_joint" type="fixed">
         <parent link="crane_x7_gripper_base_link"/>
         <child link="camera_link"/>
-        <origin xyz="0 0.1 0" rpy="0 1.570796326795 0"/>
+        <origin xyz="0 0.1 0" rpy="0 4.7123889803846898576939650749193 0"/>
+        <!--0 1.570796326795 0-->
     </joint>
 
-    <!-- camera -->
     <gazebo reference="camera_link">
         <sensor type="camera" name="camera1">
             <update_rate>30.0</update_rate>
@@ -52,7 +52,7 @@
             <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
                 <alwaysOn>true</alwaysOn>
                 <updateRate>0.0</updateRate>
-                <cameraName>rrbot/camera1</cameraName>
+                <cameraName>camera1</cameraName>
                 <imageTopicName>image_raw</imageTopicName>
                 <cameraInfoTopicName>camera_info</cameraInfoTopicName>
                 <frameName>camera_link</frameName>
