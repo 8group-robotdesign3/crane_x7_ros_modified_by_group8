@@ -6,7 +6,7 @@
 
 ![crane_x7_gazebo](https://rt-net.github.io/images/crane-x7/crane_x7_gazebo.png "crane_x7_gazebo")
 
-ROS Packages for CRANE-X7. This package was made changes to original [https://github.com/rt-net/crane_x7_ros].  A group8 that was composed in cit-future-robotics lecture edited this. The main changes are made to the contents of the every package.xml file, crane_x7_examples,crane_x7_description and crane_x7_gazebo folders of each folder.
+ROS Packages for CRANE-X7. This package was made changes to original [https://github.com/rt-net/crane_x7_ros].  A group8 that was composed in cit-future-robotics lecture edited this. The main changes are made to the contents of the every package.xml file, crane_x7_examples and crane_x7_gazebo folders of each folder.
 
 Product page:  
 [https://www.rt-net.jp/products/crane-x7](https://www.rt-net.jp/products/crane-x7?lang=en)
