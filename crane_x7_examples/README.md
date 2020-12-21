@@ -47,24 +47,22 @@ roslaunch crane_x7_gazebo crane_x7_with_table.launch
 
 ## Run "poisute" motion 
 
-`demo.launch`を実行している状態で弊班が作ったロボットによるペットボトルキャップの"ポイ捨て"動作を実行できます。
+`demo.launch`を実行している状態で弊班が作ったロボットによる缶の"ポイ捨て"動作を実行できます。
 
-### group6.launch
+### find_and_hold.launch
 
-実機動作,シミュレーター共に対応しています。
+実機動作に対応しています。
 
-crane_x7が目の前に落ちているペットボトルキャップを拾ってゴミ箱の前でポイ捨てをするか迷う動作を行った後に後ろに投げ捨てます。
+crane_x7の前方特定範囲にピンクの折り紙を巻いた缶がある場合それを拾ってポイ捨てをします。無かった場合はテーブル全体を薙ぎ払う動作を行います。
 
 #### 実機を使う場合
 
 以下の二つの図の様にロボットの正面方向前方200mmの所にペットボトルキャップを1つ置き、ゴミ箱をロボットの正面方向前方400mm(ペットボトルキャップから200mm)の所に配置します。
 
-<img src=https://github.com/8group-robotdesign3/crane_x7_ros/blob/master/crane_x7_examples/uekara.png width=500px />
-
-<img src=https://github.com/8group-robotdesign3/crane_x7_ros/blob/master/crane_x7_examples/yokokara.png width=500px />
+<img src=https://github.com/8group-robotdesign3/crane_x7_ros_modified_by_group8/blob/master/crane_x7_examples/haitizu.png width=500px />
 
 次のコマンドで実行します。
 
 ```sh
-roslaunch crane_x7_examples group6.launch
+roslaunch crane_x7_examples find_and_hold.launch
 ```
