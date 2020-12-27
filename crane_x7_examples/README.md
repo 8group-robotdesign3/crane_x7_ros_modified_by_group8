@@ -1,6 +1,6 @@
 # crane_x7_examples
 
-設計製作論3,グループ8のCRANE-X7を用いたシステムに関するリポジトリです。
+設計製作論3,グループ8のCRANE-X7を用いたシステムに関するリポジトリです。このパッケージではcrane_x7の前方特定範囲内にある空き缶を拾って投げ捨てる事が出来ます。
 
 ## システムの起動方法
 
@@ -16,6 +16,7 @@ Terminalを開き、`crane_x7_bringup`の`demo.launch`を起動します。
 
 実機無しで動作を確認する場合、
 制御信号ケーブルを接続しない状態で次のコマンドを実行します。
+このパッケージはプログラムに追記しない限りgazebo上でカラー画像、点群を取得する事は出来ません。それを行いたい場合はlocate_estimate.cpp内のカラー画像、点群を受け取るトピックに適切なものを指定してください。
 
 ```sh
 roslaunch crane_x7_bringup demo.launch fake_execution:=true
@@ -57,7 +58,11 @@ crane_x7の前方特定範囲にピンクの折り紙を巻いた缶がある場
 
 #### 実機を使う場合
 
-以下の二つの図の様にロボットの正面方向前方200mmの所にペットボトルキャップを1つ置き、ゴミ箱をロボットの正面方向前方400mm(ペットボトルキャップから200mm)の所に配置します。
+以下の図のようにピンクの折り紙を巻いた空き缶を用意します。
+<img src=https://github.com/8group-robotdesign3/crane_x7_ros_modified_by_group8/blob/master/crane_x7_examples/akikan.jpg width=500px />
+
+ロボットにポイ捨てをさせる場合は以下の図の青い四角形の範囲内に空き缶を設置します。
+青い範囲外かつ以下の図の黒い半円の範囲内に空き缶を置いた場合薙ぎ払う動作を行います。
 
 <img src=https://github.com/8group-robotdesign3/crane_x7_ros_modified_by_group8/blob/master/crane_x7_examples/haitizu.png width=500px />
 
