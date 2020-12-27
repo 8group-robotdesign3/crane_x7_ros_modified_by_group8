@@ -1,6 +1,6 @@
 [English](README.en.md) | [日本語](README.md)
 
-# crane_x7_ros
+# crane_x7_ros_modified_by_group8
 
 [![industrial_ci](https://github.com/rt-net/crane_x7_ros/workflows/industrial_ci/badge.svg?branch=master)](https://github.com/rt-net/crane_x7_ros/actions?query=workflow%3Aindustrial_ci+branch%3Amaster)
 
