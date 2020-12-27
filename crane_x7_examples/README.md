@@ -66,6 +66,14 @@ crane_x7の前方特定範囲にピンクの折り紙を巻いた缶がある場
 
 <img src=https://github.com/8group-robotdesign3/crane_x7_ros_modified_by_group8/blob/master/crane_x7_examples/haitizu.png width=500px />
 
+ポイ捨て動作は4種類、薙ぎ払い動作は3種類あります。実行の際はそれぞれについてどれか一つがランダムに選択され実行されます。
+
+ポイ捨て動作
+
+
+
+薙ぎ払い動作
+
 次のコマンドで実行します。
 
 ```sh
