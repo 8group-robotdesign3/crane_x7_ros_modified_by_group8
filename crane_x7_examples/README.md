@@ -62,7 +62,7 @@ crane_x7の前方特定範囲にピンクの折り紙を巻いた缶がある場
 <img src=https://github.com/8group-robotdesign3/crane_x7_ros_modified_by_group8/blob/master/crane_x7_examples/akikan.jpg height=300px />
 
 ロボットにポイ捨てをさせる場合は以下の図の青い四角形の範囲内に空き缶を設置します。
-青い範囲外かつ以下の図の黒い半円の範囲内に空き缶を置いた場合薙ぎ払う動作を行います。
+青い範囲外かつ以下の図の黒い半円の範囲内に空き缶を置いた場合ロボットは薙ぎ払う動作を行います。
 
 <img src=https://github.com/8group-robotdesign3/crane_x7_ros_modified_by_group8/blob/master/crane_x7_examples/haitizu.png width=500px />
 
