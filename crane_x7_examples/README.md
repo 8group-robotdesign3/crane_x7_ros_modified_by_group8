@@ -69,10 +69,17 @@ crane_x7の前方特定範囲にピンクの折り紙を巻いた缶がある場
 ポイ捨て動作は4種類、薙ぎ払い動作は3種類あります。実行の際はそれぞれについてどれか一つがランダムに選択され実行されます。
 
 ポイ捨て動作
-
+・https://youtu.be/vijc1l0GHZ8
+・https://youtu.be/1xodhp0x2yE
+・https://youtu.be/pqUIFGcDyzs
+・https://youtu.be/5Ge4IksQk-o
 
 
 薙ぎ払い動作
+・https://youtu.be/FqgcY9u_59M
+・https://youtu.be/gYiEyViJK8k
+・https://youtu.be/plgapQKrkck
+
 
 次のコマンドで実行します。
 
